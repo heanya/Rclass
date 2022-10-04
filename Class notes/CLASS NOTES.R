@@ -337,28 +337,165 @@ library(tidyr)
 
 #preparing data, you can use the function read.table() too)
 
-rairuho<-read.table('rairuoho.txt')
-head(rairuho)
-str(rairuho)
+rairuho<- read.table("C:/Users/Andrea/Desktop/Rclass/week 4/rairuoho.txt", header = TRUE,sep="\t", dec=".")
+head(rairuoho)
+str(rairuoho)
 
 #replacing "nutrient" with "enriched within treatment"
-rairuho_1<-rairuho %>% mutate(treatment= replace(treatment, treatment == "nutrient", "enriched")
-head(rairuho_1)
+rairuoho_1<-rairuho %>% mutate(treatment= replace(treatment, treatment == "nutrient", "enriched")
+head(rairuoho_1)
 
 # reformatting 'day' as a single variable containig 6 levels
-rairuho_2<-rairuho_1%>%pivot_longer(day3:day8,names_to = "day", values_to= "length")
-head(rairuho_2)
+rairuho_2<-rairuoho_1%>%pivot_longer(day3:day8,names_to = "day", values_to= "length")
+head(rairuoho_2)
 
 #combining 2 columns (spatial1 and spatial2) into 1 column
-rairuho3<-rairuho_2%>% unite("spatial coordinates", spatial1:spatial2, sep = "_")
-head(rairuho3)
+rairuoho3<-rairuoho_2%>% unite("spatial coordinates", spatial1:spatial2, sep = "_")
+head(rairuoho3)
 
 #
-rairuho4<-dplyr::select(rairuho4, )
+rairuoho4<-dplyr::select(rairuoho4, -row, -column)
 
 ##"_" for italic "***" for bold
 
 ##start class week 4/ Data types and structures##
+##c=combine
+
+x <- c(1.0, -3.4, 2, 140.1) #numeric and double 
+typeof(x)
+mode(x)
+
+##To force R to recognize a value as an integer 
+#add an upper case L to the number.
+
+x<- 4L
+typeof(x)
+
+x<-c("bubul", "magpie", "spoonbill", "barbet")
+typeof(x)
+
+x<- 3
+y<- 5.3
+x+y
+
+plot(x,y)
+
+#logical values can take 1 or 2 values/conditions: TRUE or FALSE
+x <- c(TRUE, FALSE, FALSE, TRUE)
+typeof(x)
+x1<- c(1, 0, 0, 1)
+x2<- as.logical(c(1, 0, 0, 1))
+
+##factor##
+#to group variables into categories aka in R "levels"
+
+a <- c("M", "F", "F", "U", "F", "M", "M", "M", "F", "U")
+typeof(x)
+
+class(a) #number of categories
+a.fact <-as.factor(a)
+class(a.fact) #class factor
+mode(a.fact)
+typeof(a.fact)
+a.fact
+
+##see difference between just calling "a" and 'a.fact'
+a #general
+a.fact #more detailed
+
+levels(a.fact)
+str(a.fact) #check, the data is always represented in alphabetical order**
+
+##the order in which the levels are displayed match their integer representation.
+
+factor(a, levels = c("U", "F", "M"))
+
+##Practice 3.1##
+
+data("iris")
+iris
+iris.sel <- subset(iris, Species == "setosa" | Species == "virginica")
+levels(iris.sel$Species)
+str(iris.sel)
+
+##versicolor still in the dataset despite the fact WE DONT WANT IT NO MORE
+## So, we can use the function 'droplevel' and get rid of it
+
+droplevels(iris.sel$Species)
+iris.sel <-
+
+##Date very important to know how your date is display
+lubridate[see library (lubridate)]
+
+##NAs and NULLs
+#NULL mean it does not exist
+#NA i need to specify whats the problem
+
+x <- c(23, NA, 1.2, 5)
+y< - c(23, NULL, 1.2, 5)
+mean(x) #[1] NA
+mean(x, na.rm = T) #here we specify what we want to do with NA 
+
+mean(y)
 
 
+##data structures##
+
+#atomic vector (only used in coding) aka numeric value
+#IMPORTANT: DONT FORGET "c()" to write values inside
+
+x<- c(10, 30, 40, 1000, 5670)
+x
+x[3]
+
+#you can combine multiple vectors
+x[c(1,3,4)]
+
+##you cannot mix numeric and character types as follows:
+x<- c(1.2, 5, "Rt","2000") #it will show error
+
+typeof(x)
+
+##matrices and arrays
+#matrices you cannot combine character and numeric
+
+#datadrames you can combine!
+                        #THIS WILL BE PART OF THE HW##
+
+name<- c("a1", "b2", "b3")
+value1 <- c(23, 4, 12)
+value2 <- c(1, 45, 5)
+dat <- data.frame(name, value1, value2)# list all the values in your dataset
+dat
+str(dat) ##always  after call structure after creating a dataset to see whether you have make mistakes
+attributes(dat) #privides attributes
+names(dat) #provides names of table
+rownames(dat) #extract row names
+
+#Lists
+
+A <-data.frame( x = c(7.3, 29.4, 29.4, 2.9, 12.3, 7.5, 36.0, 4.8, 18.8, 4.2),
+                y = c(5.2, 26.6, 31.2, 2.2, 13.8, 7.8, 35.2, 8.6, 20.3, 1.1))
+# A= numeric=num
+B <- c(TRUE, FALSE) #B= logical=logi
+C <- c("apples", "oranges", "round") #c=character=chr
+my.lst <- list (A=A, B=B, C=C)
+my.lst
+str(my.lst)
+names(my.lst)
+my.lst$A
+my.lst[(1)] #1=A bc is the first element of my list
+rownames(my.lst) #it gives NULL bc we didnt assign any names
+
+
+#Coercing data (forced or converted)
+#check more in the list under OCEAN5098
+
+y   <- c("23.8", "6", "100.01","6")
+y.c <- as.numeric(y)
+y.c
+as.integer(y)
+
+## for the hw practice 3.2 
+#i will have to use coerced date functions 
 
