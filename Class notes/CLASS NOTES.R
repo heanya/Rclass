@@ -327,7 +327,38 @@ income_sep
 income_long_var %>% separate_rows(var1, sep = '_')
 head(income_long)
 
-##do exercise later##
+##do exercise later//Practice 2.2##
+
+##10/4 CLAS NOTES & SOLVING PRACTICE 2.2##
+
+#loading library#
+library(dplyr)
+library(tidyr)
+
+#preparing data, you can use the function read.table() too)
+
+rairuho<-read.table('rairuoho.txt')
+head(rairuho)
+str(rairuho)
+
+#replacing "nutrient" with "enriched within treatment"
+rairuho_1<-rairuho %>% mutate(treatment= replace(treatment, treatment == "nutrient", "enriched")
+head(rairuho_1)
+
+# reformatting 'day' as a single variable containig 6 levels
+rairuho_2<-rairuho_1%>%pivot_longer(day3:day8,names_to = "day", values_to= "length")
+head(rairuho_2)
+
+#combining 2 columns (spatial1 and spatial2) into 1 column
+rairuho3<-rairuho_2%>% unite("spatial coordinates", spatial1:spatial2, sep = "_")
+head(rairuho3)
+
+#
+rairuho4<-dplyr::select(rairuho4, )
+
+##"_" for italic "***" for bold
+
+##start class week 4/ Data types and structures##
 
 
 
