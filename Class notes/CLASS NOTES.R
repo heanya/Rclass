@@ -499,3 +499,254 @@ as.integer(y)
 ## for the hw practice 3.2 
 #i will have to use coerced date functions 
 
+#######10/11########
+#solving homework practice 3.2
+
+#library always call it befoe coding!
+install.packages("tidyverse")
+library(tidyverse)
+
+#dataset
+before_diet <- c(104, 95, 87, 77, 112)
+after_diet <- c(96, 91, 81, 75, 118)
+data1 <- data.frame(before_diet, after_diet, row.names = paste('subject_', 1:5))
+
+#data.frame(before_diet, after_diet, row.names = paste('subject_', 1:5))
+
+#formatting
+
+data2 <- data1 %>%
+  pivot_longer(before_diet:after_diet, names_to = 'time', values_to = 'weight') %>%
+  as.data.frame() #nice foramtting option
+data2$time <-as.factor(data2$time)
+str(data2) #chec typeof(data2$weight)
+
+# list_1
+subject <- rownames(data1)
+weight_loss <- c((data1 [,2]-data_1 [,1])/data1[,1]*100)
+weight_data <-data.frame(subject, weight_loss)
+WEIGHT_LOSS <- list(subject=subject, weight_loss=weight_loss, weight_data=weight_data)
+str(WEIGHT_LOSS)
+
+#message
+text <- "too easy"
+
+
+##### CLASS GRAPHICS #####
+
+?base
+data("iris")
+head(iris)
+plot(iris$Petal.Length)
+plot(iris$Petal.Width)
+
+#scatterplot pairwise
+
+plot(Petal.Length ~ Petal.Width, data = iris) 
+
+#customization
+
+plot(iris$Petal.Length ~ iris$Petal.Width) #using $ operator
+
+# add labels to x- and y-axes, title 
+plot(Petal.Length ~ Petal.Width, data = iris,
+     xlab = 'Petal.Width (cm)',
+     ylab = 'Petal.Lenght(cm)', 
+     main ='Petal.Width & lenght of iris flower')
+
+####ADDING COLOR WIII#### 
+#plotting character= pch 
+#see ?pch para entender mas
+#character expansion cex
+
+plot(Petal.Length ~ Petal.Width, data = iris,
+     xlab = 'Petal width (cm)', 
+     ylab = 'Petal length (cm)', 
+     main = 'Petal width and length of iris flower',
+     pch = 19, cex=2, #play with this to get familiar how to costumize your plot
+     col = rgb (1,0,0,0.10)) #set its colors to be 90% 
+#transparent (10% opaque) using col = rgb (0,0,0,0.10). #rgb red green blue
+
+# create a vector of character with color names using "ifelse"
+
+col.iris <- ifelse(iris$Species=='setosa', 'purple', ifelse(iris$Species=='versicolor', 'blue','pink')) 
+col.iris
+
+#the graphs with different colors assign in the code before
+plot(Petal.Length ~ Petal.Width, data = iris,
+     xlab = 'Petal width (cm)', 
+     ylab = 'Petal length (cm)', 
+     main = 'Petal width and length of iris flower',
+     pch = 19, cex=2, 
+     col = scales::alpha(col.iris, 0.2))
+
+##adding legend to a plot
+
+plot(Petal.Length ~ Petal.Width, data = iris,
+     xlab = 'Petal width (cm)', 
+     ylab = 'Petal length (cm)', 
+     main = 'Petal width and length of iris flower', # main=graph title
+     pch = 19, cex=2, 
+     col = scales::alpha(col.iris, 0.2))
+
+legend(x="bottomright", pch= 19, cex=1.0, legend= c("versicolor","setosa", "virginica"), col=levels(as.factor(scales::alpha(col.iris, 0.2))))
+
+##The argument las=1 will rotate y-axis labels
+
+plot(Petal.Length ~ Petal.Width, dat = iris,
+     xlab = 'Petal width (cm)', 
+     ylab = 'Petal length (cm)', 
+     main = 'Petal width and length of iris flower',
+     pch = 19, cex=2, las=1,
+     col = scales::alpha((col.iris), 0.2))
+
+legend(x="bottomright", pch= 19, cex=1.0, legend= c("versicolor","setosa", "virginica"), col=levels(as.factor(scales::alpha(col.iris, 0.2))))
+str(legend)
+##The size of the main title, axis, labels is also control with cex arguments
+plot(Petal.Length ~ Petal.Width, dat = iris,
+     xlab = 'Petal width (cm)', 
+     ylab = 'Petal length (cm)', 
+     main = 'Petal width and length of iris flower',
+     cex.axis=1.0, cex.lab=1.5, cex.main=1.5,
+     pch = 19, cex=2, las=1,
+     col = scales::alpha(col.iris, 0.2))
+
+legend(x="bottomright", pch= 19, cex=1.0, legend= c("versicolor","setosa", "virginica"), col=levels(as.factor(scales::alpha(col.iris, 0.2))))
+
+## Finally the size of the points can be set as a proportion of a given continuous variable
+
+ratio<-iris$Petal.Length/iris$Sepal.Width  # ratio between the length of petal and the width of Sepal
+plot(Petal.Length ~ Petal.Width, dat = iris,
+     xlab = 'Petal width (cm)', 
+     ylab = 'Petal length (cm)', 
+     main = 'Petal width and length of iris flower',
+     cex.axis=1.0, cex.lab=1.5, cex.main=1.5,
+     pch = 19, las=1, cex= ratio * 2, 
+     col = scales::alpha(col.iris, 0.2))
+
+legend(x="bottomright", pch= 19, cex=1.0, legend= c("versicolor","setosa", "virginica"), col=levels(as.factor(scales::alpha(col.iris, 0.2))))
+
+ratio<-iris$Petal.Length/iris$Sepal.Width  # ratio between the length of petal and the width of Sepal
+plot(Petal.Length ~ Petal.Width, dat = iris,
+     xlab = 'Petal width (cm)', 
+     ylab = 'Petal length (cm)', 
+     main = 'Petal width and length of iris flower',
+     cex.axis=1.0, cex.lab=1.5, cex.main=1.5,
+     pch = 19, las=1, cex= ratio * 2, 
+     col = scales::alpha(col.iris, 0.2))
+
+legend(x="bottomright", pch= 19, cex=1.0, legend= c("versicolor","setosa", "virginica"), col=levels(as.factor(scales::alpha(col.iris, 0.2))))
+
+########### TYPES OF PLOTS ##################
+
+#plane plot
+#pairs allows a quick examination of the relationship among variables 
+#that’s called a scatterplot matrix.
+
+pairs(iris[1:4], pch = 19, col = scales::alpha(col.iris, 0.2))
+
+#line plot
+# generate a data frame with chronological variable
+
+blossom <- NULL #it's typically good to start something empty and then you add elements after
+blossom$year <- 2010:2019
+blossom$count.alaska <- c(3, 1, 5, 2, 3, 8, 4, 7, 6, 9)
+blossom$count.canada <- c(4, 6, 5, 7, 10, 8, 10, 11, 15, 17)
+as.data.frame(blossom)
+
+#let's create the line plot
+
+plot(count.alaska ~ year, dat = blossom, type='l', #specifying the type of plot l=line
+     ylab = "No. of flower blooming")
+
+#to plot both point and line, b=both. plot symbol to pch=20
+
+plot(count.alaska ~ year,dat = blossom, type='b', pch=20,
+     ylab = "No. of flower blooming")
+
+#customization
+#We can rotate the axis, increase the width of the line, change its type and color:
+
+plot(count.alaska ~year, dat = blossom, type='b', pch=20,
+     lty=2, lwd=0.5, col= 'red',  #lty=line type
+     ylab = "No. of flower blooming")
+
+##add another line with the same customization
+
+plot(count.alaska ~ year,dat = blossom, type='b', pch=20,
+     lty=2, lwd=0.5, col='red',
+     ylab = "No. of flower blossoming") 
+lines(count.canada ~ year,dat = blossom, type='b', pch=20,
+      lty=3, lwd=0.5, col='blue')
+
+##### using the xlim and ylim parameters####
+
+y.rng <-range(c(blossom$count.alaska, blossom$count.canada)) #only focus on the y-axis
+
+plot(count.alaska ~year, dat= blossom, type='b', ylim = y.rng,
+     lty=2, lwd=1, col='red',
+     ylab='No. of flower blooming')
+lines(count.canada ~ year, dat= blossom,
+      lty=1, lwd=1, col='blue')
+
+#using the points function instead of the lines function
+
+iris.ver <- subset(iris, Species == 'versicolor')
+iris.vir <- subset(iris, Species == 'virginica')
+
+y.rng <- range( c(iris.ver$Petal.Length, iris.vir$Sepal.Length), na.rm = TRUE)#Note 1: that na.rm=T is added in the range function to prevent NA value in the data from returning an NA in the range.
+x.rng <- range( c(iris.ver$Petal.Width, iris.vir$Sepal.Width), na.rm = TRUE)
+
+#plot an empty plot
+plot(Petal.Length ~ Petal.Width, dat = iris.ver,
+     xlab = 'Petal width (cm)', 
+     ylab = 'Petal length (cm)', 
+     main = 'Petal width and length of iris flower',
+     cex.axis=1.0, cex.lab=1.5, cex.main=1.5, type='n',
+     xlim=x.rng,  ylim=y.rng)
+
+# Add points for versicolor
+points(Petal.Length ~ Petal.Width, dat = iris.ver, pch = 20,cex=2, 
+       col = rgb(0,0,1,0.10))
+
+# Add points for versicolor
+points(Petal.Length ~ Petal.Width, dat = iris.vir, pch = 20,cex=2, 
+       col =  scales::alpha('#fc03c6', 0.2)) #scales::alpha to add transparency effect to the plot
+
+# Add legend #add name to the plots
+legend("topleft", c("versicolor", "virginica"), pch = 19, cex=1.2,
+       col = c(rgb(0,0,1,0.10), scales::alpha('#fc03c6', 0.2)))
+#Note 2: You can define the color using the rgb function
+
+##box plot graphical tools used to summarize the distribution of a data batch
+#“box” that depicts the range covered by 50% of the data (aka the interquartile range, IQR
+#a horizontal line that displays the median, and “whiskers” that depict 1.5 times the IQR or the largest (for the top half) or smallest (for the bottom half) values.
+
+boxplot(iris$Sepal.Width, na.rm=TRUE)
+
+#Several variables can be summarized on the same plot
+boxplot(iris$Sepal.Width,iris$Sepal.Length, iris$Petal.Width,iris$Petal.Length, names = c("Sepal.Width", "Sepal.Length", "Petal.Length","Petal.Width"), main = "Iris flower traits")
+
+#remove outliers when desire, outline parameter= FALSE
+
+boxplot(iris$Sepal.Width,iris$Sepal.Length, iris$Petal.Width,iris$Petal.Length, names = c("Sepal.Width", "Sepal.Length", "Petal.Length","Petal.Width"), main = "Iris flower traits", outline = FALSE, horizontal = TRUE)
+
+boxplot(Sepal.Width ~ Species,iris) 
+
+#reordering the titles (main) in the plot
+
+iris$Species.ord <- reorder(iris$Species,iris$Sepal.Width, median)
+levels(iris$Species.ord)
+boxplot(Sepal.Width ~ Species.ord, iris)
+
+##HISTOGRAM PLOT## function "hist"
+
+hist(iris$Sepal.Width, xlab = "Width of Sepal", main = NA)
+
+#add  number of bins
+hist(iris$Sepal.Width, xlab = "Width of Sepal", main = NA, breaks=10)
+
+###QQPlot### 
+##practice 4.1 and 4.2#### DO IT!!!
+
+
