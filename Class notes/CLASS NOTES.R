@@ -746,7 +746,196 @@ hist(iris$Sepal.Width, xlab = "Width of Sepal", main = NA)
 #add  number of bins
 hist(iris$Sepal.Width, xlab = "Width of Sepal", main = NA, breaks=10)
 
-###QQPlot### 
+###ggplot### 
 ##practice 4.1 and 4.2#### DO IT!!!
 
+############Mapping############dothe class and practice
+#########Loops and Functions##############
+#And practice 6.2## learn aout the equation too
+## a type of animation(gifskin)  #ask Lioni
+
+#############Statistics############# 11/1 week 7
+#download statistics
+
+#remember to install.package to call a function before writing 'library'
+
+library (psych) #an even MORE detailed info >  function summary 
+library(ggplot2) #for ggplot function
+library(dplyr)
+library(gridExtra) #for the grid.arrange function
+library(car) # for leveneTest function
+
+#Descriptive
+
+# students data set url 
+students<-read.table('https://www.dipintothereef.com/uploads/3/7/3/5/37359245/students.txt',header=T, sep="\t", dec='.') 
+students
+# to write it:
+write.table(students, file = "Data/students.txt", sep = "\t", row.names=T)
+
+summary(students) #for detailed info about your dataset
+psych::describe(students) 
+# * mean there's a prob on your data. ?help for more info
+
+#mean, meadian, sd, etc
+
+median(students$height)
+ind.male <- students$gender == "male"
+mean(students$height[ind.male])
+
+#function apply and aggregate are very common
+#when u use the function aggregate, YOU MUST HAVE A LIST 
+#read more about the function "apply", this func can help you to avoid LOOPS, call it after you called the table
+
+aggregate(students$height,list (students$gender),median)
+tapply(students$height,students$gender, median)#tapply=
+
+####################practice 7.1####################
+
+#(1)
+data("iris")
+iris
+
+plot1 <-ggplot(iris, aes(x=Species, y=Sepal.Length)) + 
+  geom_boxplot()
+
+plot2 <-ggplot(iris, aes(x=Species, y=Sepal.Length)) + 
+  geom_boxplot()
+
+plot3 <-ggplot(iris, aes(x=Species, y=Sepal.Length)) +
+  geom_boxplot()
+
+plot4 <-ggplot(iris, aes(x=Species, y=Sepal.Length)) +
+  geom_boxplot()
+
+library(grid.arrange)
+grid.arrange(plot1, plot2, plot3, plot4, ncol=2)
+describeBy (iris, iris$Species)
+
+#(2)
+
+iris %>% group_by(Species) %>% summarise(across(c(1:4), length))
+
+#(3) calculating median by Sepal.Length
+
+aggregate(iris[,1:4],by=list(iris$Species), median)
+tapply(iris$Sepal.Length , iris$Species, mean)
+
+#Hypothesis
+#one of the objectives of stats is is hypothesis testing and something called The Null Hypothesis
+
+# H0=null hypothesis, an absence of difference (does not mean there is no difference)
+# H1= the alternative hypothesis - the presence of a difference
+#degree of freedom, read more about it, link vid in class!
+
+#Correlation 
+#Pearson correlation - parametric
+
+#dataset hypotheses?
+data(students)
+x <- students$height
+y <- students$shoesize
+s <-students [,1:2] # a matrix
+# Pearson correlation
+# cor(x,y)
+# cor(s)
+cor.test(x,y) # correlation test, by default is always a Pearson correlation
+
+# represented with it confident interval on a scatter plot
+
+ggplot(students, aes(x = height, y = shoesize)) + 
+  geom_point() +
+  stat_smooth(method = "lm", col = "green")
+
+#Spearman correlation - non-parametric
+
+# Spearman correlation (monotonic)
+# cor(x,y, method ='spearman')
+
+
+cor.test(x,y, method ='spearman')
+
+#running both types of correlation
+
+w<-(1:100)
+z<-exp(x)
+cor.test(w,z,method='pearson') # super low
+cor.test(w,z,method='spearman') #super high
+
+##### do practice 7.2
+
+##########Chi-square test###############
+
+#Cast 240 times a die. We counted occurrence of 1,2,3,4,5,6
+die<-data.frame(obs=c(55,44,35,45,31,30), row.names=c('Cast1','Cast2','Cast3','Cast4','Cast5','Cast6'))
+die #Is this die fair? Define H0 and H1.  
+
+chisq.test(die)
+#Chi-square test can simply be used to compare the distribution of frequencies in two populations:
+#Hardy-Weinberg
+# A common biological application of a Chi-square test is the Hardy-Weinberg equilibrium.
+
+F <- matrix(nrow=4,ncol=2,data=c(33,14, 8,18,31,25,14,12))
+chisq.test(F) # alternative see `fisher.test`
+obs <- c(750, 50, 200)
+exp <- c(0.60, 0.35, 0.05)
+chisq.test (x=obs, p=exp)
+
+#Student t-test
+
+# One sample
+t.test (students$height, mu=170)
+
+# Two sample (with equal variances)
+t.test (students$height~students$gender, var.equal = TRUE)
+
+# Two sample (with unequal variances, default option when using t.test) 
+t.test (students$height~students$gender)
+
+# Two sample paired t.test
+t.test (students$height~students$gender, paired=T)
+
+## do practice 7.3
+
+#Mann-Whitney Test
+#A non-parametric solution for the comparison of two samples: Mann-Whitney U-test (independent) or Wilcoxon W-test (dependant)
+
+# Normality plot & test
+students$height[6]<-132
+students$height[10]<-310
+students$height[8]<-132
+students$height[9]<-210
+boxplot(height~gender, students)
+
+qqnorm(students$height) 
+qqline(students$height) 
+
+shapiro.test(students$height) # data are not normal
+
+#Variances
+#used to determine if the variances of two (or more) populations are equal.
+
+# Test of variance: we test HO: homogeneous, H1:heterogeneous
+fligner.test (students$height ~ students$gender)
+
+#using the ToothGrowth data set (car package) on multiple groups
+
+tg<-ToothGrowth
+tg$dose<-factor(tg$dose)
+boxplot(len~dose*supp, data=tg)
+
+# also work with: boxplot(len ~ interaction (dose,supp), data=tg)
+# or: plot(len ~ interaction (dose,supp), data=tg)
+bartlett.test(len~interaction (supp,dose),data=ToothGrowth) # sensitivity non-normality +++
+
+install.packages("car")
+library(car)
+leveneTest(len~interaction (supp,dose),data=ToothGrowth) # sensitivity non-normality ++
+
+fligner.test(len~interaction (supp,dose),data=ToothGrowth) # sensitivity non-normality +
+
+######tarea  7.4
+#tips for tarea
+# 1 calculate t value first
+# 2 compare with the student distribution
 
