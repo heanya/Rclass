@@ -808,7 +808,8 @@ plot3 <-ggplot(iris, aes(x=Species, y=Sepal.Length)) +
 plot4 <-ggplot(iris, aes(x=Species, y=Sepal.Length)) +
   geom_boxplot()
 
-library(grid.arrange)
+install.packages("gridExtra") #no need to write again in the code bc its been installed
+library(gridExtra)
 grid.arrange(plot1, plot2, plot3, plot4, ncol=2)
 describeBy (iris, iris$Species)
 
